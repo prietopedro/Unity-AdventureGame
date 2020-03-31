@@ -403,6 +403,7 @@ MonoBehaviour:
   id: 0
   username: 
   animator: {fileID: 0}
+  my_rigidbody: {fileID: 0}
 --- !u!114 &3692678586448224022
 MonoBehaviour:
   m_ObjectHideFlags: 0

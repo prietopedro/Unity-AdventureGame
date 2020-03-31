@@ -29,8 +29,8 @@ public class RoomMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            cam.minPosition += cameraChange;
-            cam.maxPosition += cameraChange;
+            //cam.minPosition += cameraChange;
+            //cam.maxPosition += cameraChange;
             other.transform.position += playerChange;
             if (needText)
             {

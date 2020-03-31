@@ -8,9 +8,11 @@ public class PlayerManager : MonoBehaviour
     public int id;
     public string username;
     public Animator animator;
+    public Rigidbody2D my_rigidbody;
     void Start()
     {
         animator = GetComponent<Animator>();
+        my_rigidbody = GetComponent<Rigidbody2D>();
         animator.SetFloat("moveX", 0);
         animator.SetFloat("moveY", -1);
     }

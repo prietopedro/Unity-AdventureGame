@@ -23,16 +23,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnPlayer(int _id, string _username, Vector3 _position, Quaternion _rotation)
+    public void SpawnPlayer(int _id, string _username, Vector3 _position)
     {
         GameObject _player;
         if (_id == Client.instance.myId)
         {
-            _player = Instantiate(localPlayerPrefab, _position, _rotation);
+            _player = Instantiate(localPlayerPrefab, _position,Quaternion.identity);
         }
         else
         {
-            _player = Instantiate(playerPrefab, _position, _rotation);
+            _player = Instantiate(playerPrefab, _position, Quaternion.identity);
         }
 
         _player.GetComponent<PlayerManager>().id = _id;
