@@ -4,19 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-    public enum ServerPackets
-    {
-        welcome = 1,
-        udpTest
-    }
+public enum ServerPackets
+{
+    welcome = 1,
+    spawnPlayer,
+    playerPosition,
+    playerRotation
+}
 
-    /// <summary>Sent from client to server.</summary>
-    public enum ClientPackets
-    {
-        welcomeReceived = 1,
-        udpTestReceive
-    }
-    public class Packet : IDisposable
+/// <summary>Sent from client to server.</summary>
+public enum ClientPackets
+{
+    welcomeReceived = 1,
+    udpTestReceived,
+    playerMovement
+}
+public class Packet : IDisposable
     {
         private List<byte> buffer;
         private byte[] readableBuffer;
@@ -157,12 +160,25 @@ using UnityEngine;
             Write(_value.Length); // Add the length of the string to the packet
             buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
         }
-        #endregion
+    public void Write(Vector3 _value)
+    {
+        Write(_value.x); // Add the length of the string to the packet
+        Write(_value.y);
+        Write(_value.z);
+    }
+    public void Write(Quaternion _value)
+    {
+        Write(_value.x); // Add the length of the string to the packet
+        Write(_value.y);
+        Write(_value.z);
+        Write(_value.w);
+    }
+    #endregion
 
-        #region Read Data
-        /// <summary>Reads a byte from the packet.</summary>
-        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public byte ReadByte(bool _moveReadPos = true)
+    #region Read Data
+    /// <summary>Reads a byte from the packet.</summary>
+    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+    public byte ReadByte(bool _moveReadPos = true)
         {
             if (buffer.Count > readPos)
             {
@@ -328,9 +344,18 @@ using UnityEngine;
                 throw new Exception("Could not read value of type 'string'!");
             }
         }
-        #endregion
+    public Vector3 ReadVector3(bool _moveReadPos = true)
+    {
+        return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+    }
 
-        private bool disposed = false;
+    public Quaternion ReadQuanternion(bool _moveReadPos = true)
+    {
+        return new Quaternion(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+    }
+    #endregion
+
+    private bool disposed = false;
 
         protected virtual void Dispose(bool _disposing)
         {
