@@ -36,5 +36,14 @@ public class ClientSend : MonoBehaviour
             SendUDPData(_packet);
         }
     }
+
+    public static void MoveRoom(int _room)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.moveRoom))
+        {
+            _packet.Write(_room);
+            SendUDPData(_packet);
+        }
+    }
     #endregion
 }

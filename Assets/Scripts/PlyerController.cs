@@ -17,7 +17,6 @@ public class PlyerController : MonoBehaviour
         change.x = Input.GetAxisRaw("Horizontal");
         change.y = Input.GetAxisRaw("Vertical");
         bool attack = Input.GetButtonDown("attack");
-
-        ClientSend.PlayerMovement(change,attack);
+        ClientSend.PlayerMovement(change, attack);
     }
 }

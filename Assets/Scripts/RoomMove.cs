@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class RoomMove : MonoBehaviour
 {
-    public Vector2 cameraChange;
     public Vector3 playerChange;
+    public Vector2 camMaxDif;
+    public Vector2 camMinDif;
     private CameraMovement cam;
-    public bool needText;
-    public string placeName;
-    public GameObject text;
-    public Text placeText;
+    public int room;
+    //public bool needText;
+    //public string placeName;
+    //public GameObject text;
+    //public Text placeText;
 
     // Start is called before the first frame update
     void Start()
@@ -29,21 +31,31 @@ public class RoomMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //cam.minPosition += cameraChange;
-            //cam.maxPosition += cameraChange;
-            other.transform.position += playerChange;
-            if (needText)
-            {
-                StartCoroutine(placeNameCo());
-            }
+            cam.smoothing = 0.1f;
+            ClientSend.MoveRoom(room);
+            ClientSend.PlayerMovement(playerChange, false);
+            cam.minPosition = camMinDif;
+            cam.maxPosition = camMaxDif;
+            StartCoroutine(changeCamSmoothing());
+            //other.transform.position += playerChange;
+            //if (needText)
+            //{
+            //    StartCoroutine(placeNameCo());
+            //}
         }
     }
 
-    private IEnumerator placeNameCo()
+    private IEnumerator changeCamSmoothing()
     {
-        text.SetActive(true);
-        placeText.text = placeName;
-        yield return new WaitForSeconds(4f);
-        text.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        cam.smoothing = 1.0f;
     }
+
+    //private IEnumerator placeNameCo()
+    //{
+    //    text.SetActive(true);
+    //    placeText.text = placeName;
+    //    yield return new WaitForSeconds(4f);
+    //    text.SetActive(false);
+    //}
 }

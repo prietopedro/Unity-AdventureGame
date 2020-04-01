@@ -29,17 +29,19 @@ public class GameManager : MonoBehaviour
         if (_id != Client.instance.myId)
         {
             _player = Instantiate(playerPrefab, _position, Quaternion.identity);
-            _player.GetComponent<PlayerManager>().animator = _player.GetComponent<Animator>();
         }
         else
         {
             _player = Instantiate(localPlayerPrefab, _position, Quaternion.identity);
-            _player.GetComponent<PlayerManager>().animator = _player.GetComponent<Animator>();
+            Camera.main.GetComponent<CameraMovement>().target = _player.GetComponent<PlayerManager>().transform;
         }
         
 
         _player.GetComponent<PlayerManager>().id = _id;
         _player.GetComponent<PlayerManager>().username = _username;
+        _player.GetComponent<PlayerManager>().animator = _player.GetComponent<Animator>();
+        _player.GetComponent<PlayerManager>().rigidBody = _player.GetComponent<Rigidbody2D>();
+        _player.GetComponent<PlayerManager>().colliding = false;
         players.Add(_id, _player.GetComponent<PlayerManager>());
     }
 }

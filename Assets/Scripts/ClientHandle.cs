@@ -31,7 +31,7 @@ public class ClientHandle : MonoBehaviour
     {
         int _id = _packet.ReadInt();
         Vector3 _position = _packet.ReadVector3();
-        GameManager.players[_id].transform.position = _position;
+        GameManager.players[_id].rigidBody.MovePosition(_position);
     }
 
     public static void AnimatorWalk(Packet _packet)
@@ -46,6 +46,6 @@ public class ClientHandle : MonoBehaviour
     {
         int _id = _packet.ReadInt();
         bool _isWalking = _packet.ReadBool();
-        GameManager.players[_id].animator.SetBool("walking",_isWalking);
+        GameManager.players[_id].animator.SetBool("moving",_isWalking);
     }
 }
