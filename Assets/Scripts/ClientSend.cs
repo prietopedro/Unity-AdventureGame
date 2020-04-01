@@ -27,16 +27,12 @@ public class ClientSend : MonoBehaviour
             SendTCPData(_packet);
         }
     }
-    public static void PlayerMovement(float[] _inputs) 
+    public static void PlayerMovement(Vector3 _change, bool _isAttacking) 
     {
         using (Packet _packet = new Packet((int)ClientPackets.playerMovement))
         {
-            _packet.Write(_inputs.Length);
-            foreach (float _input in _inputs)
-            {
-                _packet.Write(_input);
-            }
-            _packet.Write(GameManager.players[Client.instance.myId].transform.position);
+            _packet.Write(_change);
+            _packet.Write(_isAttacking);
             SendUDPData(_packet);
         }
     }

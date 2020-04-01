@@ -24,23 +24,28 @@ public class ClientHandle : MonoBehaviour
         int _id = _packet.ReadInt();
         string _username = _packet.ReadString();
         Vector3 _position = _packet.ReadVector3();
-
-        Debug.Log("Player spawning");
         GameManager.instance.SpawnPlayer(_id, _username, _position);
     }
 
     public static void PlayerPosition(Packet _packet)
     {
         int _id = _packet.ReadInt();
-        Vector3 _change = _packet.ReadVector3();
         Vector3 _position = _packet.ReadVector3();
-        Debug.Log("Not equal");
-        GameManager.players[_id].animator.SetBool("moving", true);
+        GameManager.players[_id].transform.position = _position;
+    }
+
+    public static void AnimatorWalk(Packet _packet)
+    {
+        int _id = _packet.ReadInt();
+        Vector3 _change = _packet.ReadVector3();
         GameManager.players[_id].animator.SetFloat("moveX", _change.x);
         GameManager.players[_id].animator.SetFloat("moveY", _change.y);
-        GameManager.players[_id].my_rigidbody.MovePosition(_position);
-        GameManager.players[_id].animator.SetBool("moving", false);
+    }
 
-
+    public static void AnimatorIsWalking(Packet _packet)
+    {
+        int _id = _packet.ReadInt();
+        bool _isWalking = _packet.ReadBool();
+        GameManager.players[_id].animator.SetBool("walking",_isWalking);
     }
 }

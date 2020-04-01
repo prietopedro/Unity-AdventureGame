@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
-
-    public GameObject localPlayerPrefab;
     public GameObject playerPrefab;
+    public GameObject localPlayerPrefab;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -26,14 +26,17 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer(int _id, string _username, Vector3 _position)
     {
         GameObject _player;
-        if (_id == Client.instance.myId)
+        if (_id != Client.instance.myId)
         {
-            _player = Instantiate(localPlayerPrefab, _position,Quaternion.identity);
+            _player = Instantiate(playerPrefab, _position, Quaternion.identity);
+            _player.GetComponent<PlayerManager>().animator = _player.GetComponent<Animator>();
         }
         else
         {
-            _player = Instantiate(playerPrefab, _position, Quaternion.identity);
+            _player = Instantiate(localPlayerPrefab, _position, Quaternion.identity);
+            _player.GetComponent<PlayerManager>().animator = _player.GetComponent<Animator>();
         }
+        
 
         _player.GetComponent<PlayerManager>().id = _id;
         _player.GetComponent<PlayerManager>().username = _username;
